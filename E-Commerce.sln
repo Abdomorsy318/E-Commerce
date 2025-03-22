@@ -17,6 +17,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastru
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Presistance", "Infrastructure\Presistance\Presistance.csproj", "{72AC2C1B-FE0D-4EA1-B531-7E2FA6B24810}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Presentation", "Infrastructure\Presentation\Presentation.csproj", "{76A7B563-8D5C-4E23-AE6E-2AA6288DDCCC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "Shared\Shared.csproj", "{08010F36-FEF0-4CE5-8FD6-8E0CE35BE26A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,6 +47,14 @@ Global
 		{72AC2C1B-FE0D-4EA1-B531-7E2FA6B24810}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{72AC2C1B-FE0D-4EA1-B531-7E2FA6B24810}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{72AC2C1B-FE0D-4EA1-B531-7E2FA6B24810}.Release|Any CPU.Build.0 = Release|Any CPU
+		{76A7B563-8D5C-4E23-AE6E-2AA6288DDCCC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{76A7B563-8D5C-4E23-AE6E-2AA6288DDCCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{76A7B563-8D5C-4E23-AE6E-2AA6288DDCCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{76A7B563-8D5C-4E23-AE6E-2AA6288DDCCC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08010F36-FEF0-4CE5-8FD6-8E0CE35BE26A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08010F36-FEF0-4CE5-8FD6-8E0CE35BE26A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08010F36-FEF0-4CE5-8FD6-8E0CE35BE26A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08010F36-FEF0-4CE5-8FD6-8E0CE35BE26A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -52,5 +64,6 @@ Global
 		{7575CAF4-1E38-48EB-9952-4A22E0A82594} = {62B938D7-B4E3-4809-B324-C535A6C2AA20}
 		{51319B3C-472F-469B-8C80-FFC835AD4C76} = {62B938D7-B4E3-4809-B324-C535A6C2AA20}
 		{72AC2C1B-FE0D-4EA1-B531-7E2FA6B24810} = {B2F6FBDE-9112-4060-9639-4B871FF5CC3D}
+		{76A7B563-8D5C-4E23-AE6E-2AA6288DDCCC} = {B2F6FBDE-9112-4060-9639-4B871FF5CC3D}
 	EndGlobalSection
 EndGlobal
