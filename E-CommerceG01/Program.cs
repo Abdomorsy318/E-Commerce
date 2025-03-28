@@ -1,9 +1,14 @@
 
+using Domain.Contracts;
+using Microsoft.EntityFrameworkCore;
+using Presistance.Data;
+using Presistance.Data.DataSeeding;
+
 namespace E_CommerceG01
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -13,9 +18,13 @@ namespace E_CommerceG01
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-
+            builder.Services.AddDbContext<ApplicationDbContext>(options =>
+            {
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionString"));
+            });
+            builder.Services.AddScoped<IDbIntializer, DbIntializer>();
             var app = builder.Build();
-
+            await InitializeDbAsync(app);
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
@@ -31,6 +40,13 @@ namespace E_CommerceG01
             app.MapControllers();
 
             app.Run();
+            async Task InitializeDbAsync(WebApplication app)
+            {
+                using var scope = app.Services.CreateScope();
+                var services = scope.ServiceProvider;
+                var dbIntializer = services.GetRequiredService<IDbIntializer>();
+                await dbIntializer.IntializeAsync();
+            }
         }
     }
 }
