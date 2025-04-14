@@ -1,7 +1,9 @@
 ﻿
+using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using Services.Abstraction;
 using Shared;
+using Shared.ErrorModels;
 
 namespace Presentation
 {
@@ -10,7 +12,7 @@ namespace Presentation
     public class ProductController(IServiceManager serviceManager) : ControllerBase
     {
         [HttpGet("products")]
-        public async Task<ActionResult<IEnumerable<ProductResultDto>>> GetAllProduct([FromQuery]ProductSepcificationsParameters parameters)
+        public async Task<ActionResult<PaginatedResult<ProductResultDto>>> GetAllProduct([FromQuery]ProductSepcificationsParameters parameters)
         {
             var Products = await serviceManager.ProductService.GetAllProductsAsync(parameters);
             return Ok(Products);
@@ -27,6 +29,10 @@ namespace Presentation
             var Types = await serviceManager.ProductService.GetAllTypesAsync();
             return Ok(Types);
         }
+        [ProducesResponseType(typeof(ErrorDetails), (int) HttpStatusCode.NotFound)]
+        [ProducesResponseType(typeof(ErrorDetails), (int) HttpStatusCode.InternalServerError)]
+        [ProducesResponseType(typeof(ErrorDetails), (int) HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(ProductResultDto), (int) HttpStatusCode.OK)]
         [HttpGet("{id}")]
         public async Task<ActionResult<ProductResultDto>> GetProduct(int id)
         {

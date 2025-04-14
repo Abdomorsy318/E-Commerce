@@ -30,6 +30,10 @@ namespace Presistance.Reposatories
             {
                 query = query.OrderByDescending(specifications.OrderByDesc);
             }
+            if(specifications.IsPagenated)
+            {
+                query = query.Skip(specifications.Skip).Take(specifications.Take);
+            }
             return query;
         }
     }

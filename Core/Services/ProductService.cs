@@ -1,13 +1,14 @@
 ﻿using AutoMapper;
 using Domain.Contracts;
 using Domain.Entities;
+using Domain.Exceptions.Product;
 using Services.Abstraction;
 using Services.Specifications;
 using Shared;
 
 namespace Services
 {
-    public class ProductService(IUniteOfWork uniteOfWork , IMapper mapper) : IProductService
+    public class ProductService(IUniteOfWork uniteOfWork, IMapper mapper) : IProductService
     {
         public async Task<IEnumerable<BrandResultDto>> GetAllBrandsAsync()
         {
@@ -16,11 +17,20 @@ namespace Services
             return BrandsResult;
         }
 
-        public async Task<IEnumerable<ProductResultDto>> GetAllProductsAsync(ProductSepcificationsParameters parameters)
+        public async Task<PaginatedResult<ProductResultDto>> GetAllProductsAsync(ProductSepcificationsParameters parameters)
         {
             var Products = await uniteOfWork.GetRepository<Product, int>().GetAllWithSpecificationsAsync(new ProductWithrandAndTypeSpecifications(parameters));
             var ProductsResult = mapper.Map<IEnumerable<ProductResultDto>>(Products);
-            return ProductsResult;
+            var count = ProductsResult.Count();
+            var totalCount = await uniteOfWork.GetRepository<Product, int>().CountAsync(new ProductCountSpecifications(parameters));
+            var result = new PaginatedResult<ProductResultDto>
+                (
+                parameters.PageIndex,
+                parameters.PageSize,
+                totalCount,
+                ProductsResult
+                );
+            return result;
         }
 
         public async Task<IEnumerable<TypeResultDto>> GetAllTypesAsync()
@@ -33,8 +43,7 @@ namespace Services
         public async Task<ProductResultDto?> GetProductByIdAsync(int id)
         {
             var Product = await uniteOfWork.GetRepository<Product, int>().GetByIdWithSpecificationsAsync(new ProductWithrandAndTypeSpecifications(id));
-            var ProductResult = mapper.Map<ProductResultDto>(Product);
-            return ProductResult;
+            return Product is null ? throw new ProductNotFoundException(id) : mapper.Map<ProductResultDto>(Product);
         }
     }
 }

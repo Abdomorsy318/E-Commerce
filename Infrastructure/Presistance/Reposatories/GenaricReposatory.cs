@@ -41,5 +41,7 @@ namespace Presistance.Reposatories
         public async Task<TEntity?> GetByIdAsync(Tkey id) => await _dbContext.Set<TEntity>().FindAsync(id);
 
         public void Update(TEntity entity) => _dbContext.Set<TEntity>().Update(entity);
+
+        public async Task<int> CountAsync(Specifications<TEntity> specifications) => await SpecificationEvaluator.GetQuery(_dbContext.Set<TEntity>(), specifications).CountAsync();
     }
 }

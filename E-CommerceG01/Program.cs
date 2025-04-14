@@ -1,5 +1,9 @@
 
 using Domain.Contracts;
+using E_CommerceG01.Extentions;
+using E_CommerceG01.Factories;
+using E_CommerceG01.Middelwares;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Presistance.Data;
 using Presistance.Data.DataSeeding;
@@ -17,20 +21,18 @@ namespace E_CommerceG01
 
             // Add services to the container.
 
-            builder.Services.AddControllers().AddApplicationPart(typeof(Presentation.AssemblyReference).Assembly);
+            //
+            builder.Services.AddInfraStructureService(builder.Configuration);
+            //
+            builder.Services.AddCoreServices();
+            //
+            builder.Services.AddPresentation();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-            builder.Services.AddScoped<IUniteOfWork, UniteOfWork>();
-            builder.Services.AddScoped<IServiceManager, ServiceManager>();
-            builder.Services.AddAutoMapper(typeof(Services.AssemblyRefernce).Assembly);
-            builder.Services.AddDbContext<ApplicationDbContext>(options =>
-            {
-                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionString"));
-            });
-            builder.Services.AddScoped<IDbIntializer, DbIntializer>();
             var app = builder.Build();
-            await InitializeDbAsync(app);
+            app.UseCustomeMiddelwareExceptions();
+            await app.SeedDbAsync();
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
@@ -46,13 +48,7 @@ namespace E_CommerceG01
             app.MapControllers();
 
             app.Run();
-            async Task InitializeDbAsync(WebApplication app)
-            {
-                using var scope = app.Services.CreateScope();
-                var services = scope.ServiceProvider;
-                var dbIntializer = services.GetRequiredService<IDbIntializer>();
-                await dbIntializer.IntializeAsync();
-            }
+            
         }
     }
 }
